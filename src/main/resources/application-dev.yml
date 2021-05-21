@@ -1,0 +1,5 @@
+spring:
+  datasource:
+    url: jdbc:h2:mem:game_shop
+    username: as
+    password: as

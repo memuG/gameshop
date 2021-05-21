@@ -1,7 +1,7 @@
 package com.przemo.gameshop.service;
 
 import com.przemo.gameshop.persistence.entities.GameEntity;
-import com.przemo.gameshop.persistence.entities.GameInventoryRepository;
+import com.przemo.gameshop.persistence.GameInventoryRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

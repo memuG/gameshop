@@ -3,10 +3,7 @@ server:
 
   spring:
     datasource:
-      url: jdbc:h2:mem:game_shop
       driverClassName: org.h2.Driver
-      username: as
-      password: as
     jpa:
       database-platform: org.hibernate.dialect.H2Dialect
       openInView: false

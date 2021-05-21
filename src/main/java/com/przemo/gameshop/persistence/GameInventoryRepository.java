@@ -1,5 +1,6 @@
-package com.przemo.gameshop.persistence.entities;
+package com.przemo.gameshop.persistence;
 
+import com.przemo.gameshop.persistence.entities.GameEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
