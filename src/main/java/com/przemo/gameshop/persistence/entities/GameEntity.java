@@ -1,7 +1,9 @@
 package com.przemo.gameshop.persistence.entities;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
-import org.hibernate.validator.constraints.Length;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.Min;
@@ -10,9 +12,12 @@ import javax.validation.constraints.Size;
 import java.math.BigDecimal;
 
 @Entity
-//@Table(name = "game_shop", catalog = "games")
+@Builder
+@Table(name = "games")
 @Data
-public class GameEntity {
+@NoArgsConstructor
+@AllArgsConstructor
+public final class GameEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
