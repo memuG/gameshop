@@ -8,6 +8,7 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.math.BigDecimal;
+import static com.przemo.gameshop.persistence.entities.GameEntityConstraints.*;
 
 @Entity
 @Builder
@@ -18,12 +19,6 @@ import java.math.BigDecimal;
 @EqualsAndHashCode
 @Cacheable(value = false)
 public final class GameEntity {
-
-    static final int MIN_TITLE_CHARS = 2;
-    static final int MAX_TITLE_CHARS = 250;
-
-    static final int MIN_PRICE = 1;
-    static final int MAX_PRICE = 999999999;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -37,5 +32,6 @@ public final class GameEntity {
 
     @Min(MIN_PRICE)
     @Max(MAX_PRICE)
+    @NotNull
     private BigDecimal price;
 }

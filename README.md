@@ -9,5 +9,7 @@ the possibility to run this Service as a Docker container (what is not that unli
 
 ## Endpoints
 * [Swagger](http://localhost:8080/swagger-ui.html)
-* [Inventory](http://localhost:8080/inventory/v1)
-* [Cart](http://localhost:8080/cart/v1)
+* [Inventory](http://localhost:8080/inventory/v1/games)
+* [Cart](http://localhost:8080/cart/v1/carts)
+* [Actuator](http://localhost:8080/actuator)
+* [Prometheus](http://localhost:8080/actuator/prometheus)

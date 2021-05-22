@@ -1,8 +1,6 @@
 package com.przemo.gameshop.persistence.entities;
 
 import com.przemo.gameshop.persistence.GameInventoryRepository;
-import com.przemo.gameshop.persistence.entities.GameEntity;
-import static com.przemo.gameshop.persistence.entities.GameEntity.*;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -20,6 +18,7 @@ import java.util.Map;
 import java.util.Random;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static com.przemo.gameshop.persistence.entities.GameEntityConstraints.*;
 
 @DataJpaTest
 @ActiveProfiles("test")

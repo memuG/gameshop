@@ -1,7 +1,10 @@
 package com.przemo.gameshop.service;
 
+import com.przemo.gameshop.dto.GameEntityDto;
 import com.przemo.gameshop.persistence.GameInventoryRepository;
 import com.przemo.gameshop.persistence.entities.GameEntity;
+import javassist.NotFoundException;
+import org.springdoc.api.OpenApiResourceNotFoundException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -9,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class GameInventoryService {
@@ -36,5 +40,21 @@ public class GameInventoryService {
 
     public GameEntity getGameByTitle(final String title) {
         return gameInventoryRepository.findByTitle(title).orElseThrow();
+    }
+
+    public void deleteGameById(final int id) {
+        gameInventoryRepository.deleteById(id);
+    }
+
+    public GameEntity updateGameById(final int id, final GameEntityDto newGameProperties) throws NotFoundException {
+        Optional<GameEntity> gameToModify= gameInventoryRepository.findById(id);
+        if (gameToModify.isEmpty())
+            throw new NotFoundException("Game with id " + id + " could not be found");
+        GameEntity modifiedGame = gameToModify.get();
+        if (newGameProperties.getTitle()!= null && !modifiedGame.getTitle().equals(newGameProperties.getTitle()))
+            modifiedGame.setTitle(newGameProperties.getTitle());
+        if (newGameProperties.getPrice()!= null && !modifiedGame.getPrice().equals(newGameProperties.getPrice()))
+            modifiedGame.setPrice(newGameProperties.getPrice());
+        return gameInventoryRepository.saveAndFlush(modifiedGame);
     }
 }
