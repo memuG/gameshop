@@ -19,11 +19,11 @@ import java.math.BigDecimal;
 @Cacheable(value = false)
 public final class GameEntity {
 
-    public static final int MIN_TITLE_CHARS = 2;
-    public static final int MAX_TITLE_CHARS = 250;
+    static final int MIN_TITLE_CHARS = 2;
+    static final int MAX_TITLE_CHARS = 250;
 
-    public static final int MIN_PRICE = 1;
-    public static final int MAX_PRICE = 999999999;
+    static final int MIN_PRICE = 1;
+    static final int MAX_PRICE = 999999999;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

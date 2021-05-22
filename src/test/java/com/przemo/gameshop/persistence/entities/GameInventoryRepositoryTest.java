@@ -1,5 +1,6 @@
-package com.przemo.gameshop.persistence;
+package com.przemo.gameshop.persistence.entities;
 
+import com.przemo.gameshop.persistence.GameInventoryRepository;
 import com.przemo.gameshop.persistence.entities.GameEntity;
 import static com.przemo.gameshop.persistence.entities.GameEntity.*;
 import org.junit.jupiter.api.Test;
@@ -32,7 +33,7 @@ class GameInventoryRepositoryTest {
 
     @Test
     void testInitialDbEntriesCount() {
-        List<GameEntity> allGames =gameInventoryRepository.findAll();
+        List<GameEntity> allGames = gameInventoryRepository.findAll();
         assertEquals(5, allGames.size());
     }
 
@@ -76,14 +77,15 @@ class GameInventoryRepositoryTest {
 
     @Test
     void testValidTitles() {
+        Random random = new Random();
         byte[] generatedTitle2CharsArray = new byte[MIN_TITLE_CHARS];
-        new Random().nextBytes(generatedTitle2CharsArray);
+        random.nextBytes(generatedTitle2CharsArray);
+        byte[] generatedTitle250CharsArray = new byte[MAX_TITLE_CHARS];
+        random.nextBytes(generatedTitle250CharsArray);
+
         assertDoesNotThrow(
                 () -> gameInventoryRepository.saveAndFlush(
                         GameEntity.builder().title(new String(generatedTitle2CharsArray, StandardCharsets.UTF_8)).price(new BigDecimal("1")).build()));
-
-        byte[] generatedTitle250CharsArray = new byte[MAX_TITLE_CHARS];
-        new Random().nextBytes(generatedTitle250CharsArray);
         assertDoesNotThrow(
                 () -> gameInventoryRepository.saveAndFlush(
                         GameEntity.builder().title(new String(generatedTitle250CharsArray, StandardCharsets.UTF_8)).price(new BigDecimal("999999999")).build()));
