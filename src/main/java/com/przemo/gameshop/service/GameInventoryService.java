@@ -1,7 +1,7 @@
 package com.przemo.gameshop.service;
 
-import com.przemo.gameshop.persistence.entities.GameEntity;
 import com.przemo.gameshop.persistence.GameInventoryRepository;
+import com.przemo.gameshop.persistence.entities.GameEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,5 +21,9 @@ public class GameInventoryService {
 
     public List<GameEntity> getAllGames() {
         return gameInventoryRepository.findAll();
+    }
+
+    public GameEntity getGameByTitle(String title) {
+        return gameInventoryRepository.findByTitle(title).orElseThrow();
     }
 }

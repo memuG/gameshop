@@ -1,11 +1,9 @@
 package com.przemo.gameshop.persistence.entities;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
+import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -17,6 +15,8 @@ import java.math.BigDecimal;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@EqualsAndHashCode
+@Cacheable(value = false)
 public final class GameEntity {
 
     @Id
@@ -24,9 +24,12 @@ public final class GameEntity {
     private Integer id;
 
     @NotNull
-    @Size(min = 2)
+    @Size(min = 2, max = 250)
+    @Column(unique = true)
+    // TODO: check the unique constraint on h2 table schema
     private String title;
 
     @Min(1)
+    @Max(999999999)
     private BigDecimal price;
 }
