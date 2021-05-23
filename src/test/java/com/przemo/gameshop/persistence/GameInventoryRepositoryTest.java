@@ -1,6 +1,6 @@
-package com.przemo.gameshop.persistence.entities;
+package com.przemo.gameshop.persistence;
 
-import com.przemo.gameshop.persistence.GameInventoryRepository;
+import com.przemo.gameshop.persistence.entities.GameEntity;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
