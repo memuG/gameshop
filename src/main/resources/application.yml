@@ -15,5 +15,5 @@ server:
 
 logging:
   level:
-    com.przemo: DEBUG
-    org.flywaydb: DEBUG
+    com.przemo: INFO
+    org.flywaydb: INFO

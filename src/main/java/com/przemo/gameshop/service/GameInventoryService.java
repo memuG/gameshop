@@ -3,7 +3,7 @@ package com.przemo.gameshop.service;
 import com.przemo.gameshop.dto.GameEntityDto;
 import com.przemo.gameshop.persistence.GameInventoryRepository;
 import com.przemo.gameshop.persistence.entities.GameEntity;
-import javassist.NotFoundException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -19,6 +19,7 @@ public class GameInventoryService {
 
     private final GameInventoryRepository gameInventoryRepository;
 
+    @Autowired
     public GameInventoryService(GameInventoryRepository gameInventoryRepository) {
         this.gameInventoryRepository = gameInventoryRepository;
     }
@@ -40,6 +41,10 @@ public class GameInventoryService {
 
     public GameEntity getGameByTitle(final String title) {
         return gameInventoryRepository.findByTitle(title).orElseThrow();
+    }
+
+    public GameEntity getGameById(final int id) {
+        return gameInventoryRepository.findById(id).orElseThrow();
     }
 
     public void deleteGameById(final int id) {

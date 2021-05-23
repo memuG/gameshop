@@ -3,3 +3,7 @@ spring:
     url: jdbc:h2:mem:testdb
   flyway:
     enabled: false
+logging:
+  level:
+    com.przemo: DEBUG
+    org.flywaydb: DEBUG

@@ -12,12 +12,11 @@ import static com.przemo.gameshop.persistence.entities.GameEntityConstraints.*;
 
 @Entity
 @Builder
-@Table(name = "games")
+@Table(name = "game")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode
-@Cacheable(value = false)
 public final class GameEntity {
 
     @Id
