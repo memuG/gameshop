@@ -17,6 +17,7 @@
 		<java.version>11</java.version>
 		<testcontainers.version>1.15.3</testcontainers.version>
 		<openapi-version>1.5.8</openapi-version>
+		<logstash-logback-version>6.6</logstash-logback-version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -63,6 +64,11 @@
 			<groupId>io.micrometer</groupId>
 			<artifactId>micrometer-registry-prometheus</artifactId>
 			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>net.logstash.logback</groupId>
+			<artifactId>logstash-logback-encoder</artifactId>
+			<version>${logstash-logback-version}</version>
 		</dependency>
 <!--		<dependency>-->
 <!--			<groupId>org.mariadb.jdbc</groupId>-->

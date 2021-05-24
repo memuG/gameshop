@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <appender name="JsonConsoleAppender" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
+            <providers>
+                <version />
+                <timestamp />
+                <logLevel />
+                <message />
+                <mdc />
+                <logstashMarkers />
+                <arguments />
+            </providers>
+        </encoder>
+    </appender>
+
+    <root level="DEBUG">
+        <appender-ref ref="JsonConsoleAppender" />
+    </root>
+</configuration>

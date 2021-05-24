@@ -1,18 +1,23 @@
 package com.przemo.gameshop.service;
 
+import com.przemo.gameshop.persistence.CartRepository;
 import com.przemo.gameshop.persistence.CartsGamesRepository;
 import com.przemo.gameshop.persistence.entities.CartEntity;
-import com.przemo.gameshop.persistence.CartRepository;
 import com.przemo.gameshop.persistence.entities.CartsGamesEntity;
 import com.przemo.gameshop.persistence.entities.GameEntity;
+import lombok.extern.slf4j.Slf4j;
+import org.slf4j.MDC;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import static com.przemo.gameshop.persistence.entities.CartsGamesEntityConstraints.*;
-
+import java.math.BigDecimal;
 import java.security.InvalidParameterException;
 import java.util.List;
 
+import static com.przemo.gameshop.persistence.entities.CartsGamesEntityConstraints.MAX_CART_GAMES;
+import static com.przemo.gameshop.persistence.entities.CartsGamesEntityConstraints.MAX_GAME_COUNT;
+
+@Slf4j
 @Service
 public class CartService {
     private final CartRepository cartRepository;
@@ -30,6 +35,8 @@ public class CartService {
     }
 
     public CartsGamesEntity addGameToCart(final int cartId, final GameEntity gameToAdd, final int gameCount) {
+        MDC.put("game", gameToAdd.getTitle());
+        log.info("Game purchase initiated...");
         CartEntity cartToModify = cartRepository.findById(cartId).orElseThrow();
         CartsGamesEntity cartsGames = CartsGamesEntity.builder()
                 .cart(cartToModify)
@@ -50,6 +57,8 @@ public class CartService {
                 return cartsGamesRepository.save(e);
             }
         }
+        log.info("Game bought");
+        MDC.clear();
         return cartsGamesRepository.saveAndFlush(cartsGames);
     }
 
@@ -77,7 +86,16 @@ public class CartService {
         return present;
     }
 
-    public List<CartsGamesEntity> listProducts(final int cartId) {
-        return cartsGamesRepository.findAllByCartId(cartId);
+    public String listProducts(final int cartId) {
+        List<CartsGamesEntity> cartContents = cartsGamesRepository.findAllByCartId(cartId);
+        BigDecimal summaryPrice = cartContents.stream()
+                .map(x -> x.getGame().getPrice().multiply(new BigDecimal(x.getGame_count())))
+                .reduce(BigDecimal::add)
+                .orElseThrow();
+
+        final StringBuilder cartSummary = new StringBuilder("\"");
+        cartSummary.append(cartContents).append("\nSummary price: ").append(summaryPrice).append(" USD");
+        cartSummary.append("\"");
+        return cartSummary.toString();
     }
 }
