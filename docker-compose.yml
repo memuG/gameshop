@@ -1,0 +1,66 @@
+version: "3.3"
+services:
+
+  gameshop:
+    container_name: gameshop
+    environment:
+      SPRING_PROFILES_ACTIVE: 'prd'
+    build: .
+    ports:
+      - "8080:8080"
+    networks:
+      - gameshop
+
+  filebeat:
+    image: docker.elastic.co/beats/filebeat:7.12.1
+    container_name: filebeat
+    user: root
+    environment:
+      ELASTICSEARCH_HOST: '["http://elasticsearch:9200"]'
+    networks:
+      - gameshop
+    volumes:
+      - ./compose-config/filebeat-config/filebeat.yml:/usr/share/filebeat/filebeat.yml
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /var/lib/docker/containers/:/var/lib/docker/containers/:ro
+    depends_on:
+      - gameshop
+      - elasticsearch
+
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.12.1
+    container_name: elasticsearch
+    environment:
+      - node.name=es01
+      - cluster.name=es-docker-cluster
+      - cluster.initial_master_nodes=es01
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - ./compose-config/elastic-data:/usr/share/elasticsearch/data
+    ports:
+      - 9200:9200
+    networks:
+      - gameshop
+
+  kibana:
+    image: docker.elastic.co/kibana/kibana:7.12.1
+    container_name: kibana
+    ports:
+      - 5601:5601
+    environment:
+      ELASTICSEARCH_URL: http://es01:9200
+      ELASTICSEARCH_HOSTS: '["http://elasticsearch:9200"]'
+    networks:
+      - gameshop
+    depends_on:
+      - elasticsearch
+
+
+networks:
+  gameshop:
+    driver: bridge
