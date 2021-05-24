@@ -10,3 +10,8 @@ management:
         include: prometheus
 springdoc:
   showActuator: true
+
+logging:
+  level:
+    com.przemo: DEBUG
+    org.flywaydb: DEBUG
