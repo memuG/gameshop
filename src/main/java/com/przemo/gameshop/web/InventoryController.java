@@ -36,7 +36,7 @@ public class InventoryController {
 
     @GetMapping(path = "games", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Page<GameEntity>> getAllGames(
-            @RequestParam(defaultValue = "0", name = "page") int page) {
+            @RequestParam(defaultValue = "0", name = "page") @Min(0) final int page) {
         return ResponseEntity.ok(gameInventoryService.getAllGames(page, GAMES_PER_PAGE));
     }
 
