@@ -6,13 +6,13 @@ import com.przemo.gameshop.service.GameInventoryService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import java.math.BigDecimal;
 import java.net.URI;
@@ -35,36 +35,25 @@ public class InventoryController {
     }
 
     @GetMapping(path = "games", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> getAllGames(
-            @RequestParam(defaultValue = "0", name = "page") @Min(0) @Max(9999) String page) {
-        int pageNo = Integer.parseInt(page);
-        return ResponseEntity.ok(gameInventoryService.getAllGames(pageNo, GAMES_PER_PAGE));
+    public ResponseEntity<Page<GameEntity>> getAllGames(
+            @RequestParam(defaultValue = "0", name = "page") int page) {
+        return ResponseEntity.ok(gameInventoryService.getAllGames(page, GAMES_PER_PAGE));
     }
 
     @PostMapping(path = "game", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> addNewGame(@Valid @RequestBody final GameEntity game) throws URISyntaxException {
-        final GameEntity secureGame =
-                GameEntity.builder()
-                .title(game.getTitle()) // String is immutable itself
-                .price(new BigDecimal(String.valueOf(game.getPrice())))
-                .build();
-        GameEntity result;
         try {
-            result = gameInventoryService.addGame(secureGame);
+            GameEntity result = gameInventoryService.addGame(game);
+            return ResponseEntity.created(new URI("/inventory/v1/game/" + result.getId())).body(result);
         } catch (DataIntegrityViolationException exc) {
-            return ResponseEntity.badRequest().body("\"Game '" + secureGame.getTitle() + "' for " + secureGame.getPrice() + " could not be added\"");
+            return ResponseEntity.badRequest().body("\"Game '" + game.getTitle() + "' for " + game.getPrice() + " could not be added " + exc.getMessage() + "\"");
         }
-        return ResponseEntity.created(new URI("/inventory/v1/game/" + result.getId())).body(result);
     }
 
     @PutMapping(path = "game/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> editGame(@PathVariable("id") final int id,
                                       @Valid @RequestBody GameEntityDto gameEntityDto) {
-        GameEntityDto defensiveDto = GameEntityDto.builder()
-                .title(gameEntityDto.getTitle())
-                .price(new BigDecimal(String.valueOf(gameEntityDto.getPrice())))
-                .build();
-        return ResponseEntity.accepted().body(gameInventoryService.updateGameById(id, defensiveDto));
+        return ResponseEntity.accepted().body(gameInventoryService.updateGameById(id, gameEntityDto));
     }
 
     @DeleteMapping(path = "game/{id}", produces = MediaType.APPLICATION_JSON_VALUE)

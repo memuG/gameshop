@@ -2,15 +2,24 @@ package com.przemo.gameshop.web;
 
 import com.przemo.gameshop.GameshopApplication;
 import javax.validation.ConstraintViolationException;
+
+import com.przemo.gameshop.persistence.entities.GameEntity;
+import com.przemo.gameshop.service.GameInventoryService;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.web.server.LocalServerPort;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.ActiveProfiles;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -26,8 +35,16 @@ class InventoryControllerTest {
     @Autowired
     private TestRestTemplate restTemplate;
 
+    @MockBean
+    GameInventoryService gameInventoryService;
+
     @Test
     public void testGamesPagination() {
+        // TODO: use mocked GameInventoryService overall in Controller tests
+
+        Mockito.when(gameInventoryService.getAllGames(0,1))
+                .thenReturn(new PageImpl<GameEntity>(Collections.singletonList(GameEntity.builder().build())));
+
         assertEquals(3, this.restTemplate
                 .getForObject("http://localhost:" + port + "/inventory/v1/games", List.class)
                 .size());

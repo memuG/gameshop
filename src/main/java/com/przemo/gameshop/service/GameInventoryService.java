@@ -10,6 +10,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -28,15 +29,9 @@ public class GameInventoryService {
         return gameInventoryRepository.save(gameEntity);
     }
 
-    public List<GameEntity> getAllGames(final int pageNo, final int pageSize) {
+    public Page<GameEntity> getAllGames(final int pageNo, final int pageSize) {
         Pageable paging = PageRequest.of(pageNo, pageSize);
-        Page<GameEntity> pagedResult = gameInventoryRepository.findAll(paging);
-
-        if(pagedResult.hasContent()) {
-            return pagedResult.getContent();
-        } else {
-            return new ArrayList<>();
-        }
+        return gameInventoryRepository.findAll(paging);
     }
 
     public GameEntity getGameByTitle(final String title) {
@@ -51,6 +46,7 @@ public class GameInventoryService {
         gameInventoryRepository.deleteById(id);
     }
 
+    @Transactional
     public GameEntity updateGameById(final int id, final GameEntityDto newGameProperties) {
         Optional<GameEntity> gameToModify= gameInventoryRepository.findById(id);
         if (gameToModify.isEmpty())
