@@ -1,4 +1,4 @@
-package com.przemo.gameshop.exceptions;
+package com.przemo.gameshop.web.exceptions;
 
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
@@ -12,7 +12,7 @@ import javax.validation.ConstraintViolationException;
 import java.security.InvalidParameterException;
 import java.util.NoSuchElementException;
 
-@ControllerAdvice(basePackages = "com.przemo.gameshop.web")
+//@ControllerAdvice(basePackages = "com.przemo.gameshop.web")
 public class GameShopControllerAdvice {
 
     @ExceptionHandler(ConstraintViolationException.class)
