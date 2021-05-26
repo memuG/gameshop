@@ -4,6 +4,7 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
@@ -16,10 +17,14 @@ import java.util.NoSuchElementException;
 @ControllerAdvice(basePackages = "com.przemo.gameshop.web")
 public class GameShopControllerAdvice {
 
-    @ExceptionHandler({MethodArgumentTypeMismatchException.class, ConstraintViolationException.class})
-    public ResponseEntity<?> handleConstraintViolation() {
-        String responseBody = "\"Invalid request parameter provided\"";
-        return new ResponseEntity<>(responseBody, HttpStatus.BAD_REQUEST);
+    @ExceptionHandler({
+            MethodArgumentTypeMismatchException.class,
+            ConstraintViolationException.class,
+            MethodArgumentNotValidException.class,
+            InvalidParameterException.class,
+            HttpMessageNotReadableException.class})
+    public ResponseEntity<?> handleRequestConstraintViolation(Exception exc) throws Exception {
+        throw exc;
     }
 
     @ExceptionHandler(EmptyResultDataAccessException.class)
@@ -34,22 +39,10 @@ public class GameShopControllerAdvice {
         return new ResponseEntity<>(responseBody, HttpStatus.valueOf(204));
     }
 
-    @ExceptionHandler(InvalidParameterException.class)
-    public ResponseEntity<?> handleEntityNotFound(InvalidParameterException exc) {
-        String responseBody = "\""+ exc.getMessage() +"\"";
-        return new ResponseEntity<>(responseBody, HttpStatus.BAD_REQUEST);
-    }
-
     @ExceptionHandler(NoSuchElementException.class)
     public ResponseEntity<?> handleResourceNotFoundInRepository() {
         String responseBody = "\"Element could not be found\"";
         return new ResponseEntity<>(responseBody, HttpStatus.valueOf(204));
-    }
-
-    @ExceptionHandler(HttpMessageNotReadableException.class)
-    public ResponseEntity<?> handleJsonNotReadable() {
-        String responseBody = "\"JSON request body could not be parsed\"";
-        return new ResponseEntity<>(responseBody, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(Exception.class)

@@ -49,7 +49,7 @@ public class GameInventoryService {
 
     @Transactional
     public GameEntity updateGameById(final int id, final GameEntityDto newGameProperties) {
-        Optional<GameEntity> gameToModify= gameInventoryRepository.findById(id);
+        Optional<GameEntity> gameToModify = gameInventoryRepository.findById(id);
         if (gameToModify.isEmpty())
             throw new EntityNotFoundException("Game with id " + id + " could not be found");
         GameEntity modifiedGame = gameToModify.get();

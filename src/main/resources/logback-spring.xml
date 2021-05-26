@@ -3,18 +3,20 @@
     <appender name="JsonConsoleAppender" class="ch.qos.logback.core.ConsoleAppender">
         <encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
             <providers>
-                <version />
-                <timestamp />
-                <logLevel />
-                <message />
-                <mdc />
-                <logstashMarkers />
-                <arguments />
+                <version/>
+                <timestamp/>
+                <logLevel/>
+                <message/>
+                <mdc/>
+                <logstashMarkers/>
+                <arguments/>
             </providers>
         </encoder>
     </appender>
 
-    <root level="DEBUG">
-        <appender-ref ref="JsonConsoleAppender" />
-    </root>
+    <springProfile name="!test">
+        <root level="DEBUG">
+            <appender-ref ref="JsonConsoleAppender"/>
+        </root>
+    </springProfile>
 </configuration>

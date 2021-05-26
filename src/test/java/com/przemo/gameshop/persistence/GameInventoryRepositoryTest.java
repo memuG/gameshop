@@ -6,19 +6,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.test.context.ActiveProfiles;
+import testutils.TestUtils;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.validation.ConstraintViolationException;
 import java.math.BigDecimal;
-import java.nio.charset.StandardCharsets;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static com.przemo.gameshop.persistence.entities.GameEntityConstraints.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 @DataJpaTest
 @ActiveProfiles("test")
@@ -76,18 +76,12 @@ class GameInventoryRepositoryTest {
 
     @Test
     void testValidTitles() {
-        Random random = new Random();
-        byte[] generatedTitle2CharsArray = new byte[MIN_TITLE_CHARS];
-        random.nextBytes(generatedTitle2CharsArray);
-        byte[] generatedTitle250CharsArray = new byte[MAX_TITLE_CHARS];
-        random.nextBytes(generatedTitle250CharsArray);
-
         assertDoesNotThrow(
                 () -> gameInventoryRepository.saveAndFlush(
-                        GameEntity.builder().title(new String(generatedTitle2CharsArray, StandardCharsets.UTF_8)).price(new BigDecimal("1")).build()));
+                        GameEntity.builder().title(TestUtils.generateGivenLengthXString(MIN_TITLE_CHARS)).price(new BigDecimal("1")).build()));
         assertDoesNotThrow(
                 () -> gameInventoryRepository.saveAndFlush(
-                        GameEntity.builder().title(new String(generatedTitle250CharsArray, StandardCharsets.UTF_8)).price(new BigDecimal("999999999")).build()));
+                        GameEntity.builder().title(TestUtils.generateGivenLengthXString(MAX_TITLE_CHARS)).price(new BigDecimal("999999999")).build()));
     }
 
     @Test
