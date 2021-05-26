@@ -1,10 +1,9 @@
 package com.przemo.gameshop.web;
 
 import com.przemo.gameshop.GameshopApplication;
-import javax.validation.ConstraintViolationException;
-
 import com.przemo.gameshop.persistence.entities.GameEntity;
 import com.przemo.gameshop.service.GameInventoryService;
+import org.hamcrest.CoreMatchers;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,17 +11,17 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.web.server.LocalServerPort;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.anyInt;
 
 @SpringBootTest(classes = GameshopApplication.class,
         webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -38,22 +37,28 @@ class InventoryControllerTest {
     @MockBean
     GameInventoryService gameInventoryService;
 
+    private List<GameEntity> emptyGameEntitiesFixture(final int count) {
+        List<GameEntity> games = new ArrayList<>();
+        for (int i = 0; i < count; ++i)
+            games.add(GameEntity.builder().build());
+        return games;
+    }
+
     @Test
     public void testGamesPagination() {
-        // TODO: use mocked GameInventoryService overall in Controller tests
+        Mockito.when(gameInventoryService.getAllGames(anyInt(), anyInt()))
+                .thenReturn(new PageImpl<>(emptyGameEntitiesFixture(3)));
 
-        Mockito.when(gameInventoryService.getAllGames(0,1))
-                .thenReturn(new PageImpl<GameEntity>(Collections.singletonList(GameEntity.builder().build())));
+        // TODO: find solution for deserializing Page
 
-        assertEquals(3, this.restTemplate
-                .getForObject("http://localhost:" + port + "/inventory/v1/games", List.class)
-                .size());
-        assertEquals(2, this.restTemplate
-                .getForObject("http://localhost:" + port + "/inventory/v1/games?page=1", List.class)
-                .size());
-        assertEquals(0, this.restTemplate
-                .getForObject("http://localhost:" + port + "/inventory/v1/games?page=2", List.class)
-                .size());
+        //        Page s = this.restTemplate
+        //                                .getForObject("http://localhost:" + port + "/inventory/v1/games", Page.class);
+        String pageJsonString = this.restTemplate
+                .getForObject("http://localhost:" + port + "/inventory/v1/games", String.class);
+        System.out.println("Przemko: " + pageJsonString);
+        assertThat(pageJsonString, CoreMatchers.containsString("\"numberOfElements\":3"));
+        assertThat(pageJsonString, CoreMatchers.containsString("\"totalElements\":3"));
+        assertThat(pageJsonString, CoreMatchers.containsString("\"totalPages\":1"));
     }
 
     @Test
@@ -76,6 +81,4 @@ class InventoryControllerTest {
                 .getForEntity("http://localhost:" + port + "/inventory/v1/games?page=9999", String.class);
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
     }
-
-    // TODO: add TestCases for further CRUD actions
 }

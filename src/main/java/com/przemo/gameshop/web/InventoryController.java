@@ -42,7 +42,7 @@ public class InventoryController {
     }
 
     @PostMapping(path = "game", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> addNewGame(@Valid @RequestBody final GameEntity game) throws URISyntaxException {
+    public ResponseEntity<?> addNewGame(@Valid @RequestBody final GameEntityDto game) throws URISyntaxException {
         try {
             GameEntity result = gameInventoryService.addGame(game);
             return ResponseEntity.created(new URI("/inventory/v1/game/" + result.getId())).body(result);

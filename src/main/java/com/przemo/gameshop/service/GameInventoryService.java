@@ -23,8 +23,11 @@ public class GameInventoryService {
         this.gameInventoryRepository = gameInventoryRepository;
     }
 
-    public GameEntity addGame(final GameEntity gameEntity) {
-        return gameInventoryRepository.save(gameEntity);
+    public GameEntity addGame(final GameEntityDto gameEntityDto) {
+        return gameInventoryRepository.save(GameEntity.builder()
+                .title(gameEntityDto.getTitle())
+                .price(gameEntityDto.getPrice())
+                .build());
     }
 
     public Page<GameEntity> getAllGames(final int pageNo, final int pageSize) {

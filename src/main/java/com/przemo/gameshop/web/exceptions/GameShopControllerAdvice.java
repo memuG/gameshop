@@ -6,16 +6,17 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 import javax.persistence.EntityNotFoundException;
 import javax.validation.ConstraintViolationException;
 import java.security.InvalidParameterException;
 import java.util.NoSuchElementException;
 
-//@ControllerAdvice(basePackages = "com.przemo.gameshop.web")
+@ControllerAdvice(basePackages = "com.przemo.gameshop.web")
 public class GameShopControllerAdvice {
 
-    @ExceptionHandler(ConstraintViolationException.class)
+    @ExceptionHandler({MethodArgumentTypeMismatchException.class, ConstraintViolationException.class})
     public ResponseEntity<?> handleConstraintViolation() {
         String responseBody = "\"Invalid request parameter provided\"";
         return new ResponseEntity<>(responseBody, HttpStatus.BAD_REQUEST);
