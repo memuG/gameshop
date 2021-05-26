@@ -15,7 +15,6 @@ import java.math.BigDecimal;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 
 import static com.przemo.gameshop.persistence.entities.GameEntityConstraints.*;
 import static org.junit.jupiter.api.Assertions.*;
