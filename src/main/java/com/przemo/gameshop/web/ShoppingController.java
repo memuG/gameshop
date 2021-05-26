@@ -1,25 +1,18 @@
 package com.przemo.gameshop.web;
 
-import com.przemo.gameshop.dto.GameEntityDto;
 import com.przemo.gameshop.persistence.entities.CartEntity;
 import com.przemo.gameshop.persistence.entities.GameEntity;
 import com.przemo.gameshop.service.CartService;
 import com.przemo.gameshop.service.GameInventoryService;
-import javassist.NotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
-import java.math.BigDecimal;
 import java.net.URI;
 import java.net.URISyntaxException;
 

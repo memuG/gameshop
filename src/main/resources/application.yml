@@ -17,3 +17,6 @@ logging:
   level:
     com.przemo: INFO
     org.flywaydb: INFO
+
+gameshop:
+  gamesPerPage: 3
