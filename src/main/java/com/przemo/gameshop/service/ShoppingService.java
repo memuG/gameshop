@@ -19,13 +19,13 @@ import static com.przemo.gameshop.persistence.entities.CartsGamesEntityConstrain
 
 @Slf4j
 @Service
-public class CartService {
+public class ShoppingService {
     private final CartRepository cartRepository;
 
     private final CartsGamesRepository cartsGamesRepository;
 
     @Autowired
-    public CartService(final CartRepository cartRepository, final CartsGamesRepository cartsGamesRepository) {
+    public ShoppingService(final CartRepository cartRepository, final CartsGamesRepository cartsGamesRepository) {
         this.cartRepository = cartRepository;
         this.cartsGamesRepository = cartsGamesRepository;
     }
