@@ -57,7 +57,7 @@ public class ShoppingService {
                 return cartsGamesRepository.save(e);
             }
         }
-        log.info("Game bought");
+        log.info("Game added to cart");
         MDC.clear();
         return cartsGamesRepository.saveAndFlush(cartsGames);
     }
