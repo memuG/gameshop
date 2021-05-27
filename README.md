@@ -37,14 +37,18 @@ afterwards the Kibana and Elasticsearch endpoints from Monitoring and analytics 
 ## Analytics
 The project uses basic analytics functionality utilizing modified ELK Stack.
 To be able to use it, please go to Kibana endpoint and from menu choose:
+
 ####Management -> StackManagement -> Kibana -> IndexPatterns
 Click on Create index pattern.
 Then create the index pattern matching existing filebeat index:
+
 ####filebeat-*
 Following the instructions, define the timefields to be:
+
 ####@timestamp
 and finish creating the index pattern.
 Than in menu go to: 
+
 ####Analytics -> Discover
 You may define your own searches or filter the log messages as you will.
 For sake of this project, a simple "Game added" message has been created so that
