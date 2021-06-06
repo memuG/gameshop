@@ -13,10 +13,20 @@
             </providers>
         </encoder>
     </appender>
+    <appender name="ConsoleAppender" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
 
-    <springProfile name="!test">
+    <springProfile name="prd">
         <root level="DEBUG">
             <appender-ref ref="JsonConsoleAppender"/>
+        </root>
+    </springProfile>
+    <springProfile name="default,dev,test">
+        <root level="DEBUG">
+            <appender-ref ref="ConsoleAppender"/>
         </root>
     </springProfile>
 </configuration>

@@ -1,5 +1,6 @@
 package com.przemo.gameshop.persistence.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
@@ -33,4 +34,8 @@ public final class GameEntity {
     @Max(MAX_PRICE)
     @NotNull
     private BigDecimal price;
+
+    @Version
+    @JsonIgnore
+    private Integer version;
 }
