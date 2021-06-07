@@ -44,6 +44,7 @@ class GameInventoryServiceTest {
                 "2.85".equals(gameInventoryService.getGameById(gameId).getPrice().toPlainString())
                 || "4.55".equals(gameInventoryService.getGameById(gameId).getPrice().toPlainString())
         );
+        assertEquals(1, gameInventoryService.getGameById(gameId).getVersion());
     }
 
     private void concurrentGameModification(int gameId, GameEntityDto gameModifications) throws InterruptedException {
